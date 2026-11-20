@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<title>ติดตามรถเข้าออก</title>
+<link rel="stylesheet" href="style.css">
+
+<style>
+
+table{
+margin:auto;
+border-collapse:collapse;
+width:60%;
+background:white;
+}
+
+th,td{
+border:1px solid #ccc;
+padding:10px;
+text-align:center;
+}
+
+th{
+background:#34495e;
+color:white;
+}
+
+</style>
+
+</head>
+
+<body>
+
+<header>
+<h1>ติดตามรถเข้าออก</h1>
+</header>
+
+<nav>
+<a href="index.html">หน้าแรก</a>
+<a href="parking.html">สถานะที่จอด</a>
+<a href="tracking.html">ติดตามรถ</a>
+<a href="developer.html">ผู้พัฒนา</a>
+<a href="contact.html">ติดต่อ</a>
+</nav>
+
+<div class="container">
+
+<h2>ประวัติรถเข้าออก</h2>
+
+<table>
+
+<thead>
+<tr>
+<th>ลำดับ</th>
+<th>ประเภท</th>
+<th>เวลา</th>
+</tr>
+</thead>
+
+<tbody id="logTable">
+</tbody>
+
+</table>
+
+</div>
+
+<!-- Firebase -->
+
+<script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-database-compat.js"></script>
+
+<script>
+
+const firebaseConfig = {
+apiKey: "YOUR_API_KEY",
+authDomain: "YOUR_PROJECT.firebaseapp.com",
+databaseURL: "https://YOUR_PROJECT-default-rtdb.firebaseio.com",
+projectId: "YOUR_PROJECT",
+storageBucket: "YOUR_PROJECT.appspot.com",
+messagingSenderId: "XXXX",
+appId: "XXXX"
+};
+
+firebase.initializeApp(firebaseConfig);
+
+const db = firebase.database();
+
+const table = document.getElementById("logTable")
+
+db.ref("logs").on("value",(snapshot)=>{
+
+table.innerHTML=""
+
+let data=snapshot.val()
+
+let i=1
+
+for(let key in data){
+
+let row=`
+
+<tr>
+<td>${i}</td>
+<td>${data[key].type}</td>
+<td>${data[key].time}</td>
+</tr>
+
+`
+
+table.innerHTML += row
+
+i++
+
+}
+
+})
+
+</script>
+
+</body>
+</html>

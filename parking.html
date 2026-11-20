@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<title>สถานะที่จอดรถ</title>
+<link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+<header>
+<h1>สถานะที่จอดรถ</h1>
+</header>
+
+<nav>
+<a href="index.html">หน้าแรก</a>
+<a href="parking.html">สถานะที่จอด</a>
+<a href="tracking.html">ติดตามรถ</a>
+<a href="developer.html">ผู้พัฒนา</a>
+<a href="contact.html">ติดต่อ</a>
+</nav>
+
+<div class="container">
+
+<h2>ที่จอดรถทั้งหมด 4 ช่อง</h2>
+
+<div class="parking">
+
+<div id="slot1" class="slot">Loading...</div>
+<div id="slot2" class="slot">Loading...</div>
+<div id="slot3" class="slot">Loading...</div>
+<div id="slot4" class="slot">Loading...</div>
+
+</div>
+
+</div>
+
+<!-- Firebase Script -->
+
+<script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-database-compat.js"></script>
+
+<script>
+
+const firebaseConfig = {
+apiKey: "YOUR_API_KEY",
+authDomain: "YOUR_PROJECT.firebaseapp.com",
+databaseURL: "https://YOUR_PROJECT-default-rtdb.firebaseio.com",
+projectId: "YOUR_PROJECT",
+storageBucket: "YOUR_PROJECT.appspot.com",
+messagingSenderId: "XXXX",
+appId: "XXXX"
+};
+
+firebase.initializeApp(firebaseConfig);
+
+const db = firebase.database();
+
+function updateSlot(id,status){
+
+let el = document.getElementById(id)
+
+if(status==="free"){
+el.className="slot free"
+el.innerHTML=id+" ว่าง"
+}else{
+el.className="slot full"
+el.innerHTML=id+" เต็ม"
+}
+
+}
+
+db.ref("parking").on("value",function(snapshot){
+
+let data=snapshot.val()
+
+updateSlot("slot1",data.slot1)
+updateSlot("slot2",data.slot2)
+updateSlot("slot3",data.slot3)
+updateSlot("slot4",data.slot4)
+
+})
+
+</script>
+
+</body>
+</html>
